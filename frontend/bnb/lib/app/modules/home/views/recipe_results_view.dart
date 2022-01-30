@@ -39,6 +39,8 @@ class RecipeResultsView extends GetView {
                             //TODO
                             launchURL(await controller.getDetails(
                                 controller.searchResults[index].id.toString()));
+                            print(controller.getDetails(
+                                controller.searchResults[index].id.toString()));
                           },
                           child: Stack(
                             alignment: Alignment.bottomCenter,
