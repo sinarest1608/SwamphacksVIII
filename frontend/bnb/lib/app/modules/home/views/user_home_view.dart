@@ -14,75 +14,64 @@ class UserHomeView extends GetView {
   UserHomeView(this.controller);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Obx(() => Scaffold(
-            floatingActionButton: controller.userIngredients.length == 0
-                ? Container()
-                : FloatingActionButton(
-                    onPressed: () {
-                      Get.to(RecipeResultsView());
-                      controller.handleSearch(controller.userIngredients);
-                    },
-                    child: Text("Submit"),
-                    isExtended: true,
-                  ),
-            // appBar: AppBar(
-            //   title: Text('UserHomeView'),
-            //   centerTitle: true,
-            // ),
-            body: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            "Hello Luis,",
-                            style: TextStyle(
-                                color: Color(0xFF1F8D7A),
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "What do you want to cook today?",
-                            style: TextStyle(color: Colors.grey, fontSize: 20),
-                          ),
-                        ],
-                      ),
-                      CircleAvatar(
-                        child: OctoImage.fromSet(
-                          image: NetworkImage(
-                            "https://www.nj.com/resizer/zovGSasCaR41h_yUGYHXbVTQW2A=/1280x0/smart/cloudfront-us-east-1.images.arcpublishing.com/advancelocal/SJGKVE5UNVESVCW7BBOHKQCZVE.jpg",
-                          ),
-                          height: Get.height * 0.05,
-                          // width: Get.width * 0.25,
-                          fit: BoxFit.cover,
-                          octoSet:
-                              OctoSet.blurHash('LEHV6nWB2yk8pyo0adR*.7kCMdnj'),
-                        ),
-                      )
-                    ],
-                  ),
-                  Container(
-                    color: Color(0xFFEEF9F0),
-                    height: 100,
-                    width: Get.width * 0.8,
-                    child: Row(
+    return Obx(() => Scaffold(
+          backgroundColor: Color(0xfffbfcfe),
+          floatingActionButton: controller.userIngredients.length == 0
+              ? Container()
+              : FloatingActionButton(
+                  backgroundColor: Colors.blue,
+                  onPressed: () {
+                    Get.to(RecipeResultsView());
+                    controller.handleSearch(controller.userIngredients);
+                  },
+                  child: Icon(Icons.check),
+                  isExtended: true,
+                ),
+          body: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 45,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.asset("assets/images/food.png"),
-                        Text("You have 12 liked Recipes\nSee Recipes")
+                        Text(
+                          "Find Best Recipe \nFor Cooking !",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  ],
+                ),
+                // Container(
+                //   color: Color(0xFFEEF9F0),
+                //   height: 100,
+                //   width: Get.width * 0.8,
+                //   child: Row(
+                //     children: [
+                //       Image.asset("assets/images/food.png"),
+                //       Text("You have 12 liked Recipes\nSee Recipes")
+                //     ],
+                //   ),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Card(
+                    elevation: 7,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    shadowColor: Colors.blue.withOpacity(0.2),
                     child: TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      //keyboardType: type,
-                      //maxLines: maxLines,
                       controller: _textContr,
                       onFieldSubmitted: (ingredient) {
                         controller.userIngredients.add(ingredient);
@@ -91,9 +80,9 @@ class UserHomeView extends GetView {
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                         border: InputBorder.none,
-                        fillColor: Colors.grey[200],
+                        fillColor: Colors.transparent,
                         filled: true,
-                        labelText: "Type item to search",
+                        labelText: "Enter Ingredients",
                         focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                             borderSide: BorderSide.none),
@@ -109,22 +98,77 @@ class UserHomeView extends GetView {
                       ),
                     ),
                   ),
-                  Obx(() => ListView.builder(
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      child: Text(
+                        "Try Something New !",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                Visibility(
+                  visible: controller.userIngredients.length != 0,
+                  child: Obx(() => ListView.builder(
                         shrinkWrap: true,
                         physics: ClampingScrollPhysics(),
                         itemCount: controller.userIngredients.length,
                         itemBuilder: (context, index) {
-                          if (controller.userIngredients.length == 0) {
-                            return Container();
-                          }
+                          if (controller.userIngredients.length == 0) {}
                           return ingredientCard(
                               controller.userIngredients[index], controller);
                         },
-                      ))
-                ],
-              ),
+                      )),
+                ),
+                Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.asset(
+                        "assets/images/homeBG.jpeg",
+                        color: Colors.black38,
+                        colorBlendMode: BlendMode.multiply,
+                        height: 450,
+                        width: Get.width,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0, vertical: 30),
+                        child: Text(
+                          "Sushi Receipe",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          )),
-    );
+          ),
+        ));
   }
 }

@@ -13,15 +13,25 @@ class RecipeResultsView extends GetView {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Made Just For You!",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+          ),
           body: controller.searchResults.length == 0
-              ? CircularProgressIndicator()
+              ? Center(child: CircularProgressIndicator())
               : Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 25.0),
                   child: ListView.builder(
                     itemCount: controller.searchResults.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: GestureDetector(
                           onTap: () async {
                             Get.snackbar(
@@ -30,61 +40,47 @@ class RecipeResultsView extends GetView {
                             launchURL(await controller.getDetails(
                                 controller.searchResults[index].id.toString()));
                           },
-                          child: Container(
-                            height: 300,
-                            width: 200,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.red,
-                                ),
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        controller.searchResults[index].image)),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 30,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.transparent,
-                                            ),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 70,
-                                    width: 180,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        controller.searchResults[index].title
-                                            .toString()
-                                            .capitalizeFirst!,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.green,
-                                        ),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
-                                  ),
-                                ],
+                          child: Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image.network(
+                                    controller.searchResults[index].image,
+                                    color: Colors.black38,
+                                    colorBlendMode: BlendMode.multiply,
+                                    height: 250,
+                                    width: Get.width,
+                                    fit: BoxFit.cover,
+                                  )),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                    )),
                               ),
-                            ),
+                              Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25.0, vertical: 30),
+                                  child: Text(
+                                    controller.searchResults[index].title
+                                        .toString()
+                                        .capitalizeFirst!,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );
