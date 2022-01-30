@@ -68,7 +68,7 @@ class SearchWithIngredient {
 
 class UnusedIngredients {
   String? aisle;
-  int? amount;
+  double? amount;
   int? id;
   String? image;
   List<dynamic>? meta;

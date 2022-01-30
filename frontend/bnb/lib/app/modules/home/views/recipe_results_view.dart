@@ -39,8 +39,8 @@ class RecipeResultsView extends GetView {
                             //TODO
                             launchURL(await controller.getDetails(
                                 controller.searchResults[index].id.toString()));
-                            print(controller.getDetails(
-                                controller.searchResults[index].id.toString()));
+                            // print(controller.getDetails(
+                            //     controller.searchResults[index].id.toString()));
                           },
                           child: Stack(
                             alignment: Alignment.bottomCenter,
@@ -55,15 +55,15 @@ class RecipeResultsView extends GetView {
                                     width: Get.width,
                                     fit: BoxFit.cover,
                                   )),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.favorite,
-                                      color: Colors.red,
-                                    )),
-                              ),
+                              // Align(
+                              //   alignment: Alignment.topRight,
+                              //   child: IconButton(
+                              //       onPressed: () {},
+                              //       icon: Icon(
+                              //         Icons.favorite,
+                              //         color: Colors.red,
+                              //       )),
+                              // ),
                               Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Padding(

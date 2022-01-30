@@ -7,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:octo_image/octo_image.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserHomeView extends GetView {
+  void launchURL(url) async =>
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   TextEditingController _textContr = TextEditingController();
   final controller;
   UserHomeView(this.controller);
@@ -29,7 +32,9 @@ class UserHomeView extends GetView {
                 ),
           body: Padding(
             padding: const EdgeInsets.all(25.0),
-            child: Column(
+            child: ListView(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
               children: [
                 SizedBox(
                   height: 45,
@@ -99,6 +104,39 @@ class UserHomeView extends GetView {
                     ),
                   ),
                 ),
+                Visibility(
+                  visible: controller.userIngredients.length != 0,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
+                        child: Text(
+                          "Click bottom button to search!",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: controller.userIngredients.length != 0,
+                  child: Obx(() => ListView.builder(
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemCount: controller.userIngredients.length,
+                        itemBuilder: (context, index) {
+                          if (controller.userIngredients.length == 0) {}
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ingredientCard(
+                                controller.userIngredients[index], controller),
+                          );
+                        },
+                      )),
+                ),
                 Row(
                   children: [
                     Padding(
@@ -113,59 +151,72 @@ class UserHomeView extends GetView {
                     ),
                   ],
                 ),
-                Visibility(
-                  visible: controller.userIngredients.length != 0,
-                  child: Obx(() => ListView.builder(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        itemCount: controller.userIngredients.length,
-                        itemBuilder: (context, index) {
-                          if (controller.userIngredients.length == 0) {}
-                          return ingredientCard(
-                              controller.userIngredients[index], controller);
-                        },
-                      )),
-                ),
-                Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Image.asset(
-                        "assets/images/homeBG.jpeg",
-                        color: Colors.black38,
-                        colorBlendMode: BlendMode.multiply,
+                controller.randomRecipes.length == 0
+                    ? CircularProgressIndicator()
+                    : Container(
                         height: 450,
-                        width: Get.width,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          )),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25.0, vertical: 30),
-                        child: Text(
-                          "Sushi Receipe",
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemCount: controller.randomRecipes.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    launchURL(controller.randomRecipes[index]
+                                        .spoonacularSourceUrl);
+                                  },
+                                  child: Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Image.network(
+                                          controller.randomRecipes[index].image,
+                                          color: Colors.black38,
+                                          colorBlendMode: BlendMode.multiply,
+                                          height: 450,
+                                          width: Get.width,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      // Align(
+                                      //   alignment: Alignment.topRight,
+                                      //   child: IconButton(
+                                      //       onPressed: () {},
+                                      //       icon: Icon(
+                                      //         Icons.favorite,
+                                      //         color: Colors.red,
+                                      //       )),
+                                      // ),
+                                      Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 25.0, vertical: 30),
+                                          child: Text(
+                                            controller
+                                                .randomRecipes[index].title,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),

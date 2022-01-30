@@ -10,6 +10,7 @@ class HomeController extends GetxController {
 
   RxList userIngredients = RxList([]);
   RxList searchResults = RxList([]);
+  RxList randomRecipes = RxList([]);
 
   final count = 0.obs;
 
@@ -27,11 +28,21 @@ class HomeController extends GetxController {
 
   Future<String> getDetails(String id) async {
     return (RecipeDetail.fromJson(await ApiProvider.getRecipeInfo(id))
-        .sourceUrl!);
+        .spoonacularSourceUrl!);
+  }
+
+  getRandomRecipe() async {
+    List list = await ApiProvider.getRandomRecipe();
+    list.forEach((element) {
+      randomRecipes.add(RecipeDetail.fromJson(element));
+    });
   }
 
   @override
-  void onInit() {}
+  void onInit() {
+    getRandomRecipe();
+    super.onInit();
+  }
 
   @override
   void onReady() {}

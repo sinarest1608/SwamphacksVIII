@@ -38,4 +38,16 @@ class ApiProvider {
 
     return jsonResponse;
   }
+
+  static getRandomRecipe() async {
+    var url = Uri.parse(Urls.baseUrl + Urls.randomRecipe);
+
+    var response = await http.get(url);
+    var jsonResponse = jsonDecode(response.body);
+
+    if (jsonResponse["recipes"] != []) {
+      return jsonResponse["recipes"];
+    }
+    return jsonResponse;
+  }
 }

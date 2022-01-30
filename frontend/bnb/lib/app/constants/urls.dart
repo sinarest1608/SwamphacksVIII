@@ -7,5 +7,8 @@ class Urls {
   static String recipeInfo =
       "/information?apiKey=$key"; //Add ID /{id}/information
 
+  static String randomRecipe =
+      "/random?apiKey=$key&number=10&tags=vegetarian,dessert";
+
   ///https://api.spoonacular.com/recipes/findByIngredients?apiKey=27003149d16d44b9aa990d3cecc00f3e&ingredients=potato,+onion,+tomato&number=2
 }
