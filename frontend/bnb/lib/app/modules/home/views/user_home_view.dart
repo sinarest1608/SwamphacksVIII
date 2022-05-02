@@ -151,72 +151,69 @@ class UserHomeView extends GetView {
                     ),
                   ],
                 ),
-                controller.randomRecipes.length == 0
-                    ? CircularProgressIndicator()
-                    : Container(
-                        height: 450,
-                        child: Padding(
+                Container(
+                  height: 450,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: controller.randomRecipes.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
-                            itemCount: controller.randomRecipes.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    launchURL(controller.randomRecipes[index]
-                                        .spoonacularSourceUrl);
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.bottomCenter,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: Image.network(
-                                          controller.randomRecipes[index].image,
-                                          color: Colors.black38,
-                                          colorBlendMode: BlendMode.multiply,
-                                          height: 450,
-                                          width: Get.width,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      // Align(
-                                      //   alignment: Alignment.topRight,
-                                      //   child: IconButton(
-                                      //       onPressed: () {},
-                                      //       icon: Icon(
-                                      //         Icons.favorite,
-                                      //         color: Colors.red,
-                                      //       )),
-                                      // ),
-                                      Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 25.0, vertical: 30),
-                                          child: Text(
-                                            controller
-                                                .randomRecipes[index].title,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                          child: GestureDetector(
+                            onTap: () {
+                              launchURL(controller
+                                  .randomRecipes[index].spoonacularSourceUrl);
+                            },
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image.network(
+                                    controller.randomRecipes[index].image,
+                                    color: Colors.black38,
+                                    colorBlendMode: BlendMode.multiply,
+                                    height: 450,
+                                    width: Get.width,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                              );
-                            },
+                                // Align(
+                                //   alignment: Alignment.topRight,
+                                //   child: IconButton(
+                                //       onPressed: () {},
+                                //       icon: Icon(
+                                //         Icons.favorite,
+                                //         color: Colors.red,
+                                //       )),
+                                // ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 25.0, vertical: 30),
+                                    child: Text(
+                                      controller.randomRecipes[index].title,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
